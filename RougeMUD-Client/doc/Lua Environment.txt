@@ -1,0 +1,124 @@
+_G =
+{
+	["Print"] = function,
+	["CreateFrame"] = function,
+	["GetFrame"] = function,
+	["GlobalRegion"] =
+	{
+		["Show"] = function,
+		["Hide"] = function,
+		["SetPoint"] = function,
+		["DelPoint"] = function,
+		["GetPoint"] = function,
+		["GetPointCount"] = function,
+	},
+	["WorldView"] =
+	{
+	},
+	[typical object] =
+	{
+		[0] = userdata,
+		["SetEventHandler"] = function,
+		["NoticeEvent"] = function,
+		["NoticeAllEvents"] = function,
+		["IgnoreEvent"] = function,
+		["IgnoreAllEvents"] = function,
+		["SetPoint"] = function,
+		["GetPoint"] = function,
+		["GetPointCount"] = function,
+		["DelPoint"] = function,
+		["SetAnchor"] = function,
+		["GetAnchor"] = function,
+		["GetAnchorCount"] = function,
+		["ClearAnchors"] = function,
+		["Show"] = function,
+		["Hide"] = function,
+		["DeleteFrame"] = function,
+	},
+	...
+}
+
+LUA_REGISTRYINDEX =
+{
+	["EVENT"] =
+	{
+		["HANDLER"] =
+		{
+			[userdata] = function,
+			...
+		},
+		[event name] =
+		{
+			[userdata] = true,
+			...
+		},
+		...
+	},
+	["OBJECT"] =
+	{
+		[userdata] =
+		{
+			["NAME"] = string,
+			["POINT"] =
+			{
+				[0] = number, -- number of points the region has
+				[1, 2, 3, ...] =
+				{
+					["NAME"] = string,
+					["X"] = number,
+					["Y"] = number,
+					["ANCHORS"] = number, -- number of anchors set to this point; deletable only if equal to 0
+				},
+				[point name] = table, -- reverse lookup for points, used in L_GetPoint
+			},
+			["ANCHOR"] =
+			{
+				[1, 2, 3, 4] =
+				{
+					["SOURCE"] = string,
+					["AXES"] = string,
+					["X"] = number,
+					["Y"] = number,
+					["DEST_OBJECT"] = userdata,
+					["DEST_POINT"] = string,
+				},
+				["X1", "X2", "Y1", "Y2"] =
+				{
+					["SOURCE"] = string,
+					["OFFSET"] = number,
+					["DEST_OBJECT"] = userdata,
+					["DEST_POINT"] = string,
+				},
+				["COMPLETE"] = boolean,
+				["VALID"] = boolean,
+			},
+			["EVENT"] =
+			{
+				[event name] = true,
+				...
+			},
+		},
+		...
+		[object name] = table, -- for looking up frames by name
+		...
+	},
+}
+
+class Object_All
+{
+	public:
+		int depth, x, y, width, height;
+		bool visible;
+	protected:
+	private:
+};
+
+r:SetPoint("name", #x, #y) = nil
+r:DelPoint(#point) = nil
+r:GetPoint(#point) = "name", #x, #y, #anchors
+r:GetPointCount() = #points
+
+r:SetAnchor("source", destobj, "dest", "type", #off1[, #off2]) = nil
+r:ClearAnchors() = nil
+r:GetAnchor(#anchor) = "source", destobj, "dest", "type", #off1[, #off2]
+r:GetAnchorCount() = #anchors

@@ -1,0 +1,14 @@
+-- INTERFACE
+UI made up of parts called objects.
+There are various types of objects; only textures are visible
+
+-- EVENTS
+UI functions by calling events, and objects handling them.
+Events are either called globally, over all objects, or is sent to one certain object
+
+-- global events
+UI_STEP
+UI_LOAD
+UI_QUIT
+
+-- targetted events

@@ -1,0 +1,11 @@
+-mods are kept in one folder, and each is in its own folder inside there
+
+-RogueMUD -> Mods -> SomeMod
+		  -> Some_Other Mod
+		  -> A Different Mod
+
+The mod's folder contains all the files needed for the mod to run, which includes images, sound files, lua code files, and the mod definition file.
+
+MOD DEFINITION FILE
+-identified by having the same name as the mod's folder, with the file extension .mdf (eg. SomeMod.mdf)
+-

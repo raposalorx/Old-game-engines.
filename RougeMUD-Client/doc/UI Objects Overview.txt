@@ -1,0 +1,108 @@
+		USER INTERFACE OBJECTS OVERVIEW/CHEATSHEET
+TERMS:
+base object
+ -a UI object that is not createable by CreateFrame, but its methods are inherited through its derivatives
+complex object
+ -a UI object that is made up of multiple simple objects
+simple object
+ -a UI object that is a base type
+system object
+ -a UI object that is only created by developer code
+widget
+ -a component of the UI that the user can interact with, user made or developer made
+
+HEIRARCHY OF SIMPLE OBJECTS:
+Object*	-> Frame	-> Region	-> Surface*	-> Text		-> FText???
+							-> Image
+					-> Secure*	-> Button
+							-> Grip
+					-> WorldView*
+					-> GlobalRegion*
+*base/system object; uncreateable by CreateFrame
+
+DESCRIPTIONS OF SIMPLE OBJECTS:
+Button:
+	An object that can tell when it is clicked upon.  Used in widgets that have mouse interaction.
+Frame:
+	A basic object, currently used for event interaction and as a base for event interaction, more to come...
+GlobalRegion:
+	A region, minus the ability to change its shape and position, that takes up the whole screen.  Used as a base for anchoring objects, and is used to determine the position of every other region.
+Grip:
+	An object that can tell when it is dragged. Used in widgets that are to be dragged around or resized by the user.
+Image:
+	A high-use object that displays an image on the screen.
+Object:
+	Used as the base object for all interface objects.
+Region:
+	Used as the base object for all objects that have shape, visibility, position, and render priority.  Also used as the parent for widgets, as an
+	invisible surface for controlling the shape and position of the entire widget.
+Secure:
+	Used as the base object for all objects that interact with the user.  Blocks Lua access (via hooking) to certain functions at certain times, to
+	prevent cheating.  The security of objects works upwards through descendance, so a secure object's descendants would not necessarily be secure, but
+	its ancestors always will be.
+Surface:
+	Used as the base object for all drawable objects.
+Text:
+	Another high-use object that displays a string of text on the screen.
+WorldView:
+	The main object of the game, displays the world as the character can see it.  Is heavily hardcoded, and is a simple object from a UI perspective.
+	It is also a base object, making it uncreatable by CreateFrame.  There is only one of it in the UI at any time, and the only interaction mods can
+	have on it are changing its dimensions.  Otherwise, all of its work is accomplished through C++ code.
+
+not yet sorted...
+Font:
+	Holds settings for font implementation.  Used by Text objects to control what font is used to render the text.  Allows much more powerful control
+	over font usage, and provides methods to set font size, colour, justification, spacing, etc.
+
+METHODS AND TARGETTED EVENTS ADDED BY SIMPLE OBJECTS:
+Button:
+ events - 
+ methods - 
+Frame:
+ events - 
+ methods - 
+Image:
+ events - 
+ methods - 
+Object:
+ events - n/a
+ methods - 
+Region:
+ events - n/a
+ methods - SetAnchor, SetAllAnchors, ClearAnchors, GetAnchor, GetAnchorCount, SetHeight, GetHeight, SetWidth, GetWidth
+Secure:
+ events - 
+ methods - 
+Surface:
+ events - 
+ methods - 
+Text:
+ events - 
+ methods - 
+note: only objects that derive from Frame have events, as Frame introduces event handling to the system
+
+DESCRIPTIONS OF COMPLEX OBJECTS:
+
+OVERVIEW OF OBJECT SECURITY:
+Object security is necessary for the environment, to prevent such cheating as making a mod that plays the game the player, to whatever extent.  While all objects can be made secure, the main bulk of security is implemented in the Secure base object.  The simple objects that inherit from the Secure object all interact directly with the user, such as clickable buttons.
+Security only kicks in during times when interface cheating would provide an unfair advantage, the primary example of which being combat.  During a lockdown, which is declared by the C++ code, all objects that descend from Secure, and their ancenstors, lock themselves down to being programatically altered, moved, resized, etc.  This makes it so that the only interaction with secure objects at this point is necessary use.  Eg. the player can still drag around secure widgets themselves, and click buttons, but such actions as a mod loading keybindings from a stored profile are blocked.
+When secure objects are created and destroyed, the security status of their ancestors is re-evaluated.  The security status of an object is stored in the C++ data, as an integer, with a value equal to the number of objects causing it to become secure, 0 meaning it is unsecure.  So, when a secure object is created, all its ancestors have their security status value incremented once, and when a secure object is destroyed, its ancestors' security status value is decremented once.  The calling or clearing of a lockdown causes all objects with a security status with a value over 0 to be locked down.
+There is also passive security built into the system, such as the architecture built up around the sending of commands.  Secure commands, such as combat-related ones, can only be run through a button or keybinding, and the player must activate these.  However, non-secure commands, such as whois requests and chat sends can be done automatically by mods.
+
+DESCRIPTIONS OF RENDERING LAYERS:
+LAYER_NORMAL:
+	Currently the only rendering layer.
+
+OVERVIEW OF RENDERING PROCESS:
+All objects of type Region, and its descendants, are placed in groups known as 'layers'.  These layers are used during rendering to decide render priority.  Layers that have a higher depth value are drawn sooner.  Within a layer, the objects it includes also have a depth setting for inside that layer.  This allows for easy grouping of similarily depthed objects, without needing a standard for which depth values to use.
+Not only are layers used for deciding the order in which to draw images to the screen, they are also used to decide which order elements should be checked in to see if they have been clicked upon.  So if two clickable elements are on top of each other, and both cover the spot that was clicked, the one with less depth will be sent the event.  However, if the top object receives click events, the bottom object receives drag events, and the user initiated a drag event, the bottom object will receive the event.
+
+OVERVIEW OF SHAPE AND ANCHOR POINTS OF REGION OBJECTS
+Another property of Region-type objects is that they have shape.  This shape is defined in C++ with a simple x, y, width, height set of values, but in Lua, there is a much more in-depth set of variables to use, in the form of anchor points.  Each region has nine anchor points (four corners, four edges, one center), as well as height and width values, that can all be set independently of each other.  Width and height are simple numerical values, but anchor points are much more complex.  They each hold an x and y offset value, as well as two values (point name and frame) used to point to the anchor point of any region that it will anchor to.  This allows regions to be moved together easily and conveniently.  Any frame with no anchors will treated as if its center is anchored to the center of the screen, using whatever offset it already had relative to the center.
+To control the anchor points, functions are available to region objects to set one anchor, delete one anchor, delete all anchors, or set all anchors to those of another object.  When an anchor is set, what actually happens is based on what kind of anchor was set:
+Corner - anchors its two adjacent edges (overwrites adjacent corner anchors, and height+width+center anchors)
+Edge - the edge is anchored like normal (overwrites adjacent corner anchors, and height/width+center anchors)
+Center - all edges are anchored, using current height and width values for offset (overwrites all corner anchors)
+Height - changes top and bottom edge anchor offsets, based on which one was set more recently (more recent remains stationary, if set by a center anchor, they are moved equally) (this setting is like an anchor, in that it is persistant, until overwritten)
+Width - changes left and right edge anchor offsets, based on which one was set more recently (more recent remains stationary, if set by a center anchor, they are moved equally) (this setting is like an anchor, in that it is persistant, until overwritten)
+So in actuality, the only settings that matter are the edge anchors, width, and height values, as the corner and center anchors are simply there for convenience's sake.  To send results through GetPoint(), a list is kept of the set anchor points, in the order that they were set.  When some anchors are set, they delete other anchor entries in the list, as indicated above.  If a point is set that is already in the list, the old entry is deleted.  Height and width values are not on the list, instead when they are set they add edge anchors relative to the region's own center.  This list is consulted when the C++ values for shape are determined.
