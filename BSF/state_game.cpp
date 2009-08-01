@@ -16,8 +16,12 @@ State_Game::State_Game()
 	// Environment vars
 	mouse_x = 0;
 	mouse_y = 0;
-	screen_w = 800;
-	screen_h = 600;
+	screen_w = 640;
+	screen_h = 480;
+	screen_x = 0;
+	screen_y = 0;
+	game_w = 1260;
+	game_h = 1260;
 
 	// Objects
 	Object_Unit* unit = CreateObject(new Object_Ship, NULL);
@@ -67,6 +71,37 @@ void State_Game::Event()
 		case SDL_MOUSEBUTTONUP:
 			break;
 		}
+	}
+	// checks for keys that can be held down for repeted presses
+	Uint8 *keystates = SDL_GetKeyState(NULL);
+	// arrow keys move the screen possition
+	if (keystates[SDLK_DOWN])
+	{
+		if (screen_y+screen_h < game_h)
+			screen_y += 20;
+		else
+			screen_y = game_h-screen_h;
+	}
+	if (keystates[SDLK_UP])
+	{
+		if (screen_y > 0)
+			screen_y -= 20;
+		else
+			screen_y = 0;
+	}
+	if (keystates[SDLK_LEFT])
+	{
+		if (screen_x > 0)
+			screen_x -= 20;
+		else
+			screen_x = 0;
+	}
+	if (keystates[SDLK_RIGHT])
+	{
+		if (screen_x+screen_w < game_w)
+			screen_x += 20;
+		else
+			screen_x = game_w-screen_w;
 	}
 }
 

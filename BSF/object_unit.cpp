@@ -48,6 +48,16 @@ double Object_Unit::GetY()
 	return y;
 }
 
+int Object_Unit::GetW()
+{
+	return w;
+}
+
+int Object_Unit::GetH()
+{
+	return h;
+}
+
 // Factory function
 Object_Unit* CreateObject(Object_Unit* new_object, const char* name)
 {

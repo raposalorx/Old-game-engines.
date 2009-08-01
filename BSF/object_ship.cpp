@@ -3,13 +3,16 @@
 Object_Ship::Object_Ship()
 {
 	rot = -10;
-	vel_mag = 10;
+	vel_mag = 1;
 	vel_dir = -10;
 
 	if (tree_textures.Search("spr_hestia"))
 		t_core = (Texture*)tree_textures.GetLast();
 	else
 		t_core = NULL;
+		
+	w = t_core->GetW();
+	h = t_core->GetH();
 }
 
 Object_Ship::~Object_Ship()
@@ -25,7 +28,7 @@ void Object_Ship::Step()
 void Object_Ship::Draw()
 {
 	if (t_core != NULL)
-		t_core->Draw(x, y, -rot);
+		t_core->Draw(x-screen_x, y-screen_y, -rot);
 }
 
 // Factory function

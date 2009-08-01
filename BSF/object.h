@@ -13,6 +13,11 @@ class Object
 
 		virtual void Step() {};
 		virtual void Draw() {};
+		
+		virtual double GetX() {};
+		virtual double GetY() {};
+		virtual int GetW() {};
+		virtual int GetH() {};
 	protected:
 	private:
 };

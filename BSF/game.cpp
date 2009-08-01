@@ -14,8 +14,8 @@ bool Game::Init()
     // Set up SDL
     // ----------------------------------------
 
-	int WIDTH = 800;
-	int HEIGHT = 600;
+	int WIDTH = 640;
+	int HEIGHT = 480;
 
 	// Initialize SDL
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)

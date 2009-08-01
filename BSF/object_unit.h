@@ -19,11 +19,13 @@ class Object_Unit : public Object
 		void Move(int new_x, int new_y);
 		void SetTeam(int new_team);
 		int GetTeam();
-		double GetX();
-		double GetY();
+		virtual double GetX();
+		virtual double GetY();
+		virtual int GetW();
+		virtual int GetH();
 	protected:
 		int team;
-		double x, y, rot, vel_mag, vel_dir;
+		double x, y, w, h, rot, vel_mag, vel_dir;
 	private:
 };
 
