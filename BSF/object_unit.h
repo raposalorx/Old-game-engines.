@@ -19,12 +19,14 @@ class Object_Unit : public Object
 		void Move(int new_x, int new_y);
 		void SetTeam(int new_team);
 		int GetTeam();
+		double GetX();
+		double GetY();
 	protected:
 		int team;
 		double x, y, rot, vel_mag, vel_dir;
 	private:
 };
 
-Object_Unit* CreateObject(Object_Unit* new_object, char* name);
+Object_Unit* CreateObject(Object_Unit* new_object, const char* name);
 
 #endif

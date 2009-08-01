@@ -6,9 +6,11 @@
 #include "object_ship.h"
 #include "object_unit.h"
 #include "state.h"
+#include "state_env.h"
 #include "state_game_env.h"
 #include "texture.h"
 
+using namespace state_env;
 using namespace state_game_env;
 
 class State_Game : public State

@@ -34,9 +34,10 @@ void Object_Sidebar::Draw()
 }
 
 // Factory function
-Object_Sidebar* CreateObject(Object_Sidebar* new_object, char* name)
+Object_Sidebar* CreateObject(Object_Sidebar* new_object, const char* name)
 {
 	objectDB.push_back(new_object);
-	tree_objects.AddString(name, new_object, 0);
+	if (name != NULL)
+		tree_objects.AddString(name, new_object, 0);
 	return new_object;
 }

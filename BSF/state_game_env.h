@@ -4,21 +4,19 @@
 #include <vector>
 
 #include "radixtrie.h"
-#include "texture.h"
+#include "state_env.h"
 
 using namespace std;
+using namespace state_env;
 
 class Object;
 class Object_Unit;
 
 namespace state_game_env
 {
-	extern vector<Texture> textureDB;
 	extern vector<Object*> objectDB;
 	extern vector<Object_Unit*> unitDB;
-	extern RadixTrie tree_textures, tree_objects;
-	extern int mouse_x, mouse_y;
-	extern int screen_w, screen_h;
+	extern RadixTrie tree_objects;
 }
 
 #endif

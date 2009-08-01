@@ -22,6 +22,6 @@ class Object_Sidebar : public Object
 		vector<Object_Unit*> u_selected;
 };
 
-Object_Sidebar* CreateObject(Object_Sidebar* new_object, char* name);
+Object_Sidebar* CreateObject(Object_Sidebar* new_object, const char* name);
 
 #endif

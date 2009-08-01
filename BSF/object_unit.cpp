@@ -38,11 +38,22 @@ int Object_Unit::GetTeam()
 	return team;
 }
 
+double Object_Unit::GetX()
+{
+	return x;
+}
+
+double Object_Unit::GetY()
+{
+	return y;
+}
+
 // Factory function
-Object_Unit* CreateObject(Object_Unit* new_object, char* name)
+Object_Unit* CreateObject(Object_Unit* new_object, const char* name)
 {
 	objectDB.push_back(new_object);
 	unitDB.push_back(new_object);
-	tree_objects.AddString(name, new_object, 0);
+	if (name != NULL)
+		tree_objects.AddString(name, new_object, 0);
 	return new_object;
 }

@@ -20,7 +20,7 @@ State_Game::State_Game()
 	screen_h = 600;
 
 	// Objects
-	Object_Unit* unit = CreateObject(new Object_Ship, "UI_SHIP");
+	Object_Unit* unit = CreateObject(new Object_Ship, NULL);
 	CreateObject(new Object_Sidebar, "UI_SIDEBAR");
 	unit->Move(10, 10);
 	unit->SetTeam(1);

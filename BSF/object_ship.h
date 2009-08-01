@@ -9,6 +9,18 @@
 
 using namespace state_game_env;
 
+struct Ship_Section
+{
+	Texture *sprite;
+	double x, y;
+};
+
+struct Ship_Weapon
+{
+	Texture *sprite_turret;
+	double x, y;
+};
+
 class Object_Ship : public Object_Unit
 {
 	public:
@@ -19,9 +31,11 @@ class Object_Ship : public Object_Unit
 		virtual void Draw();
 	protected:
 	private:
-		Texture* t_core;
+		Texture *t_core;
+		vector<Ship_Section> sectionDB;
+		vector<Ship_Weapon> weaponDB;
 };
 
-Object_Ship* CreateObject(Object_Ship* new_object, char* name);
+Object_Ship *CreateObject(Object_Ship *new_object, const char *name);
 
 #endif
